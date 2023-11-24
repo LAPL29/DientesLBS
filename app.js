@@ -1,36 +1,39 @@
-
 const dientes = [];
 for (let i = 1; i <= 32; i++) {
     let diente = document.querySelector(`#dientesucio${i}`);
     diente.classList.add('dienteTransicion');
-    dientes.push({ element: diente, limpio: false }); // Para cada diente para saber si está limpio o no
+    dientes.push({ element: diente, limpio: false });
 }
-Draggable.create("#cepilloconpasta", {
+
+Draggable.create("#cepilloconpasta, #pasta1", {
     bounds: "body",
     onDrag: function () {
-        // Se Obtiene la posición del cepillo al arrastrar
-        let cepilloRect = this.target.getBoundingClientRect();
+        // Obtener la posición de la punta del cepillo (pastasola)
+        let pastaSolaRect = document.querySelector("#pasta1").getBoundingClientRect();
 
         // Se Itera sobre los dientes del 1 al 32
         for (let i = 0; i < 32; i++) {
             let diente = dientes[i].element;
             let dienteRect = diente.getBoundingClientRect();
 
-            // Si el diente está limpio, no se cambia la opacidad
-            if (dientes[i].limpio) {
+            // Si el diente está limpio o no está dentro del área de pastasola, no se cambia la opacidad
+            if (dientes[i].limpio || !isInArea(dienteRect, pastaSolaRect)) {
                 continue;
             }
-            // Verificar la colisión entre el cepillo y el diente actual
-            if (
-                cepilloRect.left < dienteRect.right &&
-                cepilloRect.right > dienteRect.left &&
-                cepilloRect.top < dienteRect.bottom &&
-                cepilloRect.bottom > dienteRect.top
-            ) {
-                // Marcar el diente como limpio y cambiar su opacidad
-                dientes[i].limpio = true;
-                diente.style.opacity = 0;
-            }
+
+            // Marcar el diente como limpio y cambiar su opacidad
+            dientes[i].limpio = true;
+            diente.style.opacity = 0;
         }
     }
 });
+
+// Función para verificar si el diente está dentro del área de pastasola
+function isInArea(dienteRect, pastaSolaRect) {
+    return (
+        dienteRect.left < pastaSolaRect.right &&
+        dienteRect.right > pastaSolaRect.left &&
+        dienteRect.top < pastaSolaRect.bottom &&
+        dienteRect.bottom > pastaSolaRect.top
+    );
+}
