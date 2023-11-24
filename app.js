@@ -20,14 +20,17 @@ for (let i = 1; i <= 5; i++) {
 }
 
 gsap.to("#pasta1", { opacity: 0});
+gsap.to("#Brillos2", { opacity: 0});
 
 Draggable.create("#cepilloconpasta", {
     bounds: "#brush-container",
+    edgeResistance: 0.5,
     onDrag: function () {
         // Obtener la posición de la punta del cepillo (pastasola)
         const pastaSolaRect = document.querySelector("#pasta1").getBoundingClientRect();
         const pastaSola = document.querySelector("#pasta1");
         const lenguaSucia = document.querySelector("#lenguasucia");
+        const brillitos = document.querySelector("#Brillos2");
         lenguaSucia.classList.add('lenguaTransicion');
         // Se Itera sobre los dientes del 1 al 32
         if(!pastaSola.classList.contains('hidden')){ 
@@ -57,9 +60,14 @@ Draggable.create("#cepilloconpasta", {
                 manchas[i].limpio = true;
                 mancha.style.opacity = 0;
             }
-            let todasLimpias = manchas.every(mancha => mancha.limpio);
-            if(todasLimpias){
+            let manchasLimpias = manchas.every(mancha => mancha.limpio);
+            let dientesLimpios = dientes.every(diente => diente.limpio);
+            if(manchasLimpias){
                 lenguaSucia.style.opacity = 0;
+                if(dientesLimpios){
+                    brillitos.classList.remove('hidden');
+                    gsap.to("#Brillos2", { opacity: 1, duration: 1, onComplete: function(){gsap.to(brillitos, {opacity:0, duration:1})},});
+                }
             }
         }
     },
