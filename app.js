@@ -38,8 +38,10 @@ Draggable.create("#cepilloconpasta", {
 Draggable.create("#pasta", {
     bounds: "#brush-container",
     onDrag: function () {
-        let pastaSola = document.querySelector("#pasta1");
-        if (this.hitTest(pastaSola, "50%")) {
+        const pastaSola = document.querySelector("#pasta1");
+        const pastaSolaBounding = document.querySelector("#pasta1").getBoundingClientRect();
+        const boquilla = document.querySelector("#boquilla-pasta").getBoundingClientRect(); 
+        if (isInArea(boquilla, pastaSolaBounding)) {
             pastaSola.classList.remove('hidden');
             gsap.to("#pasta1", { opacity: 1, duration: 1});
         }
