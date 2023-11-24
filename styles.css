@@ -3,3 +3,19 @@
     transition: opacity 0.8s ease; /* Puedes ajustar la duración y el tipo de transición según tus necesidades */
 }
 
+.parent{
+    width: 50%;
+}
+#brush-container{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+.hidden{
+    display: none;
+}
